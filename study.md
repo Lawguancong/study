@@ -508,5 +508,66 @@ Object.isFrozen()
 
 
 
+Object.prototype.isPrototypeOf()
+isPrototypeOf() 方法用于测试一个对象是否存在于另一个对象的原型链上。
+备注：isPrototypeOf() 与 instanceof 运算符不同。在表达式 "object instanceof AFunction"中，object 的原型链是针对 AFunction.prototype 进行检查的，而不是针对 AFunction 本身。
+prototypeObj.isPrototypeOf(object)
+
+
+Object.isSealed()
+Object.isSealed() 方法判断一个对象是否被密封。
+Object.isSealed(obj)
+表示给定对象是否被密封的一个Boolean 。
+如果这个对象是密封的，则返回 true，否则返回 false。密封对象是指那些不可 扩展 的，且所有自身属性都不可配置且因此不可删除（但不一定是不可写）的对象。
+
+
+Object.preventExtensions()
+Object.preventExtensions()方法让一个对象变的不可扩展，也就是永远不能再添加新的属性。
+如果一个对象可以添加新的属性，则这个对象是可扩展的。Object.preventExtensions()将对象标记为不再可扩展，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，一般来说，不可扩展对象的属性可能仍然可被删除。尝试将新属性添加到不可扩展对象将静默失败或抛出TypeError（最常见的情况是strict mode (en-US)中，但不排除其他情况）。
+Object.preventExtensions()仅阻止添加自身的属性。但其对象类型的原型依然可以添加新的属性。
+该方法使得目标对象的 [[prototype]]  不可变；任何重新赋值 [[prototype]] 操作都会抛出 TypeError 。这种行为只针对内部的 [[prototype]] 属性， 目标对象的其它属性将保持可变。
+一旦将对象变为不可扩展的对象，就再也不能使其可扩展。
+不可扩展对象的原型是不可变的：
+
+
+
+Object.prototype.propertyIsEnumerable()
+obj.propertyIsEnumerable(prop)
+在原型链上 propertyIsEnumerable 不被考虑;只考虑自身；
+propertyIsEnumerable() 方法返回一个布尔值，表示指定的属性是否可枚举。
+每个对象都有一个 propertyIsEnumerable 方法。此方法可以确定对象中指定的属性是否可以被 for...in 循环枚举，但是通过原型链继承的属性除外。如果对象没有指定的属性，则此方法返回 false。
+
+
+Object.seal()
+Object.seal()方法封闭一个对象，阻止添加新属性并将所有现有属性标记为不可配置。当前属性的值只要原来是可写的就可以改变。
+Object.seal(obj)
+通常，一个对象是可扩展的（可以添加新的属性）。密封一个对象会让这个对象变的不能添加新属性，且所有已有属性会变的不可配置。属性不可配置的效果就是属性变的不可删除，以及一个数据属性不能被重新定义成为访问器属性，或者反之。但属性的值仍然可以修改。尝试删除一个密封对象的属性或者将某个密封对象的属性从数据属性转换成访问器属性，结果会静默失败或抛出TypeError（在严格模式 中最常见的，但不唯一）。
+
+Object.setPrototypeOf()
+Object.setPrototypeOf() 方法设置一个指定的对象的原型 ( 即, 内部[[Prototype]]属性）到另一个对象或  null。
+警告：由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，更改对象的 [[Prototype]]在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 obj.__proto__ = ... 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何[[Prototype]]已被更改的对象的代码。如果你关心性能，你应该避免设置一个对象的 [[Prototype]]。相反，你应该使用 Object.create()来创建带有你想要的[[Prototype]]的新对象。
+
+
+Object.prototype.valueOf()
+valueOf() 方法返回指定对象的原始值。
+
+
+
+Object.values()
+Object.values()方法返回一个给定对象自身的所有可枚举属性值的数组，值的顺序与使用for...in循环的顺序相同 ( 区别在于 for-in 循环枚举原型链中的属性 )。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```
