@@ -305,11 +305,206 @@ arr.sort((a,b) => a - b); // [1, 2, 2, 3, 4, 5, 6, 6, 7, 8, 735]
 Array.prototype.toLocaleString()
 toLocaleString() 返回一个字符串表示数组中的元素。数组中的元素将使用各自的 toLocaleString 方法转成字符串，这些字符串将使用一个特定语言环境的字符串（例如一个逗号 ","）隔开。
 
+Array.prototype.toString()
+const array1 = [1, 2, 'a', '1a'];
+console.log(array1.toString());// expected output: "1,2,a,1a"
+返回值
+一个表示指定的数组及其元素的字符串。
+描述
+Array对象覆盖了Object的 toString 方法。对于数组对象，toString 方法连接数组并返回一个字符串，其中包含用逗号分隔的每个数组元素。
+当一个数组被作为文本值或者进行字符串连接操作时，将会自动调用其 toString 方法。
+ECMAScript 5 semantics
+从 JavaScript 1.8.5 (Firefox 4) 开始，和 ECMAScript 第5版语义（semantics）一致，toString() 方法是通用的，可被用于任何对象。将调用Object.prototype.toString()，并返回结果值。
+
+Array.prototype.unshift()
+unshift() 方法将一个或多个元素添加到数组的开头，并返回该数组的新长度(该方法修改原有数组)。
+arr.unshift(element1, ..., elementN)
+参数列表
+elementN
+要添加到数组开头的元素或多个元素。
+返回值
+当一个对象调用该方法时，返回其 length 属性值。
+
+描述
+unshift 方法会在调用它的类数组对象的开始位置插入给定的参数。
+
+unshift 特意被设计成具有通用性；这个方法能够通过 call 或 apply 方法作用于类数组对象上。不过对于没有 length 属性（代表从0开始的一系列连续的数字属性的最后一个）的对象，调用该方法可能没有任何意义。
+
+注意, 如果传入多个参数，它们会被以块的形式插入到对象的开始位置，它们的顺序和被作为参数传入时的顺序一致。 于是，传入多个参数调用一次 unshift ，和传入一个参数调用多次 unshift (例如，循环调用)，它们将得到不同的结果。例如:
+
+let arr = [4,5,6];
+arr.unshift(1,2,3);
+console.log(arr); // [1, 2, 3, 4, 5, 6]
+
+arr = [4,5,6]; // 重置数组
+arr.unshift(1);
+arr.unshift(2);
+arr.unshift(3);
+console.log(arr); // [3, 2, 1, 4, 5, 6]
+
+Array.prototype.values()
+values() 方法返回一个新的 Array Iterator 对象，该对象包含数组每个索引的值
 
 
 
+Object
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 
+
+Object.prototype.constructor
+
+
+
+Object.assign()
+浅拷贝可枚举
+Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象分配到目标对象。它将返回目标对象。
+如果目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。后面的源对象的属性将类似地覆盖前面的源对象的属性。
+Object.assign 方法只会拷贝源对象自身的并且可枚举的属性到目标对象。该方法使用源对象的[[Get]]和目标对象的[[Set]]，所以它会调用相关 getter 和 setter。因此，它分配属性，而不仅仅是复制或定义新的属性。如果合并源包含getter，这可能使其不适合将新属性合并到原型中。为了将属性定义（包括其可枚举性）复制到原型，应使用Object.getOwnPropertyDescriptor()和Object.defineProperty() 。
+String类型和 Symbol 类型的属性都会被拷贝。
+在出现错误的情况下，例如，如果属性不可写，会引发TypeError，如果在引发错误之前添加了任何属性，则可以更改target对象。
+备注： Object.assign 不会在那些source对象值为 null 或 undefined 的时候抛出错误。
+继承属性和不可枚举属性是不能拷贝的
+
+
+Object.create()
+
+Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__。 （请打开浏览器控制台以查看运行结果。）
+
+
+
+Object.defineProperty()
+https://zhuanlan.zhihu.com/p/127408589
+Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
+该方法允许精确地添加或修改对象的属性。通过赋值操作添加的普通属性是可枚举的，在枚举对象属性时会被枚举到（for...in 或 Object.keys 方法），可以改变这些属性的值，也可以删除这些属性。这个方法允许修改默认的额外选项（或配置）。默认情况下，使用 Object.defineProperty() 添加的属性值是不可修改（immutable）的。
+
+对象里目前存在的属性描述符有两种主要形式：1数据描述符（描述属性） 和 2存取描述符（存取属性）。数据描述符是一个具有值的属性，该值可以是可写的，也可以是不可写的。存取描述符是由 getter 函数和 setter 函数所描述的属性。一个描述符只能是这两者其中之一；不能同时是两者。
+
+这两种描述符都是对象。它们共享以下可选键值（默认值是指在使用 Object.defineProperty() 定义属性时的默认值）：
+
+把configurable修改成false是单向操作，无法撤销！不可以configurable改成 false->true;
+注意：即便属性是configurable:false，我们还是可以把writable和enumerable的状态由true改为false，但是无法由false改为true。
+
+configurable 特性表示对象的属性是否可以被删除，以及除 value 和 writable 特性外的其他特性是否可以被修改。
+
+
+Object.freeze()
+浅冻结；不可新增、修改、删除属性
+Object.freeze() 方法可以冻结一个对象。一个被冻结的对象再也不能被修改；冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性，不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值。此外，冻结一个对象后该对象的原型也不能被修改。freeze() 返回和传入的参数相同的对象。
+不可扩展、不可配置、不可写
+被冻结对象自身的所有属性都不可能以任何方式被修改。任何修改尝试都会失败，无论是静默地还是通过抛出TypeError异常（最常见但不仅限于strict mode）。
+
+数据属性的值不可更改，访问器属性（有getter和setter）也同样（但由于是函数调用，给人的错觉是还是可以修改这个属性）。如果一个属性的值是个对象，则这个对象中的属性是可以修改的，除非它也是个冻结对象。数组作为一种对象，被冻结，其元素不能被修改。没有数组元素可以被添加或移除。
+
+这个方法返回传递的对象，而不是创建一个被冻结的副本。
+对于一个常量对象，整个引用图（直接和间接引用其他对象）只能引用不可变的冻结对象。冻结的对象被认为是不可变的，因为整个对象中的整个对象状态（对其他对象的值和引用）是固定的。注意，字符串，数字和布尔总是不可变的，而函数和数组是对象。
+
+要使对象不可变，需要递归冻结每个类型为对象的属性（深冻结）。当你知道对象在引用图中不包含任何 环 (循环引用)时，将根据你的设计逐个使用该模式，否则将触发无限循环。对 deepFreeze()  的增强将是具有接收路径（例如Array）参数的内部函数，以便当对象进入不变时，可以递归地调用 deepFreeze() 。你仍然有冻结不应冻结的对象的风险，例如[window]。
+
+
+
+// 使用Object.freeze是冻结一个对象最方便的方法.
+var frozen = { 1: 81 };
+Object.isFrozen(frozen) //=== false
+Object.freeze(frozen);
+Object.isFrozen(frozen) //=== true
+// 一个冻结对象也是一个密封对象.
+Object.isSealed(frozen) //=== true
+// 当然,更是一个不可扩展的对象.
+Object.isExtensible(frozen) //=== false
+
+
+
+Object.getOwnPropertyDescriptor(obj, prop)
+Object.getOwnPropertyDescriptor() 方法返回指定对象上一个自有属性对应的属性描述符。（自有属性指的是直接赋予该对象的属性，不需要从原型链上进行查找的属性）
+
+
+
+Object.getOwnPropertyDescriptors(obj)
+Object.getOwnPropertyDescriptors() 方法用来获取一个对象的所有自身属性的描述符。
+
+浅拷贝一个对象
+Object.assign() 方法只能拷贝源对象的可枚举的自身属性，同时拷贝时无法拷贝属性的特性们，而且访问器属性会被转换成数据属性，也无法拷贝源对象的原型，该方法配合 Object.create() 方法可以实现上面说的这些。
+Object.create(
+  Object.getPrototypeOf(obj),
+  Object.getOwnPropertyDescriptors(obj)
+);
+
+创建子类
+创建子类的典型方法是定义子类，将其原型设置为超类的实例，然后在该实例上定义属性。这么写很不优雅，特别是对于 getters 和 setter 而言。 相反，您可以使用此代码设置原型：
+function superclass() {}
+superclass.prototype = {
+  // 在这里定义方法和属性
+};
+function subclass() {}
+subclass.prototype = Object.create(superclass.prototype, Object.getOwnPropertyDescriptors({
+  // 在这里定义方法和属性
+}));
+
+
+Object.getOwnPropertyNames(obj)
+Object.getOwnPropertyNames()方法返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组。
+
+
+Object.getOwnPropertySymbols(obj)
+Object.getOwnPropertySymbols() 方法返回一个给定对象自身的所有 Symbol 属性的数组。
+
+
+Object.getPrototypeOf(object)
+Object.getPrototypeOf() 方法返回指定对象的原型（内部[[Prototype]]属性的值）。
+
+
+
+Object.prototype.hasOwnProperty()
+obj.hasOwnProperty(prop)
+hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是，是否有指定的键）。
+所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。
+('toString' in Object)
+
+
+Object.is()
+Object.is() 方法判断两个值是否为同一个值。
+Object.is() 方法判断两个值是否为同一个值，如果满足以下任意条件则两个值相等：
+
+都是 undefined
+都是 null
+都是 true 或都是 false
+都是相同长度、相同字符、按相同顺序排列的字符串
+都是相同对象（意味着都是同一个对象的值引用）
+都是数字且
+都是 +0
+都是 -0
+都是 NaN
+都是同一个值，非零且都不是 NaN
+Object.is() 与 == 不同。== 运算符在判断相等前对两边的变量（如果它们不是同一类型）进行强制转换（这种行为将 "" == false 判断为 true），而 Object.is 不会强制转换两边的值。
+
+Object.is() 与 === 也不相同。差别是它们对待有符号的零和 NaN 不同，例如，=== 运算符（也包括 == 运算符）将数字 -0 和 +0 视为相等，而将 Number.NaN 与 NaN 视为不相等。
+
+
+
+Object.isExtensible()
+Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）。
+Object.isExtensible(obj)
+// 新对象默认是可扩展的.
+var empty = {};
+Object.isExtensible(empty); // === true
+
+// ...可以变的不可扩展.
+Object.preventExtensions(empty);
+Object.isExtensible(empty); // === false
+
+// 密封对象是不可扩展的.
+var sealed = Object.seal({});
+Object.isExtensible(sealed); // === false
+
+// 冻结对象也是不可扩展.
+var frozen = Object.freeze({});
+Object.isExtensible(frozen); // === false
+
+
+
+Object.isFrozen()
+一个对象是冻结的是指它不可扩展，所有属性都是不可配置的，且所有数据属性（即没有getter或setter组件的访问器的属性）都是不可写的。
 
 
 
